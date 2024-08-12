@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Dashboard from "./pages/Dashboard";
+import Header from "./components/header";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Sidebar from "./components/sidebar";
+import { createContext, useState } from "react";
+const MyContext = createContext();
 function App() {
+  const [isToggleSidebar, setIsToggleSidebar] = useState(false);
+  const values = {
+    isToggleSidebar,
+    setIsToggleSidebar,
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <MyContext.Provider value={values}>
+        <Header />
+        <div className="main d-flex">
+          <div
+            className={`sidebar-wrapper ${isToggleSidebar === true ? "toggle" : ""}`}
+          >
+            <Sidebar />
+          </div>
+          <div
+            className={`content  ${isToggleSidebar === true ? "toggle" : ""} `}
+          >
+            <Routes>
+              <Route path="/" exact={true} element={<Dashboard />} />
+              <Route path="/dashboard" exact={true} element={<Dashboard />} />
+            </Routes>
+          </div>
+        </div>
+      </MyContext.Provider>
+    </BrowserRouter>
   );
 }
 
 export default App;
+export { MyContext };

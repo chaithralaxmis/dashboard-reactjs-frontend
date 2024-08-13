@@ -6,11 +6,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "./components/sidebar";
 import { createContext, useEffect, useState } from "react";
 import Login from "./pages/login";
+import SignUp from "./pages/signup";
 const MyContext = createContext();
 function App() {
   const [isToggleSidebar, setIsToggleSidebar] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isHideSidebarAndHeader, setisHideSidebarAndHeader] = useState(false);
+  const [lightTheme, setLightThemeMode] = useState(true);
+
+  useEffect(() => {
+    if (lightTheme === true) {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.remove("light");
+      document.body.classList.add("dark");
+    }
+    localStorage.setItem("lightTheme", lightTheme);
+  }, [lightTheme]);
+
   const values = {
     isToggleSidebar,
     setIsToggleSidebar,
@@ -18,6 +32,8 @@ function App() {
     setIsLogin,
     isHideSidebarAndHeader,
     setisHideSidebarAndHeader,
+    lightTheme,
+    setLightThemeMode,
   };
   return (
     <BrowserRouter>
@@ -39,6 +55,7 @@ function App() {
               <Route path="/" exact={true} element={<Dashboard />} />
               <Route path="/dashboard" exact={true} element={<Dashboard />} />
               <Route path="/login" exact={true} element={<Login />} />
+              <Route path="/signup" exact={true} element={<SignUp />} />
             </Routes>
           </div>
         </div>

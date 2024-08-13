@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button, TextField } from "@mui/material";
 import { FaEye, FaPencilAlt, FaUserCircle } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
@@ -16,6 +16,7 @@ import Pagination from "@mui/material/Pagination";
 // import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { MyContext } from "../../App";
 
 export const data = [
   ["Task", "Hours per Day"],
@@ -44,6 +45,12 @@ const Dashboard = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const context = useContext(MyContext);
+  useEffect(() => {
+    context.setisHideSidebarAndHeader(false);
+    window.scrollTo(0, 0);
+  });
   return (
     <>
       <div className="right-content">
@@ -185,11 +192,10 @@ const Dashboard = () => {
             </div>
             <div className="col-md-3">
               <h4>SEARCH BY</h4>
-              <TextField
-                id="outlined-size-small"
-                label="id/name/category/brand"
-                className="w-100"
-                size="small"
+              <input
+                type="text"
+                placeholder="id/name/category/brand"
+                className="w-100 input-searchby"
               />
             </div>
           </div>

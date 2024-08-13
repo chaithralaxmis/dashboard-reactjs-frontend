@@ -11,6 +11,11 @@ body {
   overflow-x: hidden;
 }
 
+body.dark {
+  background: #071739 !important;
+}
+
+
 ::-webkit-scrollbar {
   width: 5px !important;
   height: 5px !important;
@@ -42,6 +47,11 @@ body {
   font-size: 16px;
 }
 
+.btn-big svg {
+  font-size: 25px;
+  margin-right: 7px;
+}
+
 .btn-round {
   border-radius: 30px !important;
 }
@@ -55,6 +65,10 @@ body {
 .link {
   color: #5e5d72;
   font-weight: 600;
+}
+
+body.dark .link {
+  color: #0858f7;
 }
 
 .link:hover {
@@ -77,6 +91,10 @@ header {
   backdrop-filter: blur(5px);
 }
 
+body.dark header {
+  background: #112143 !important;
+}
+
 header .logo {
   text-decoration: none;
   font-weight: 800;
@@ -96,6 +114,19 @@ header button.rounded-circle {
   width: 40px !important;
   height: 40px !important;
   background: #f0f5ff;
+}
+
+body.dark header button.rounded-circle {
+  background: #112755 !important;
+}
+
+body.dark header button.rounded-circle svg {
+  color: white;
+}
+
+body.dark header .logo span {
+  color: white;
+  opacity: 0.8;
 }
 
 header button.rounded-circle svg {
@@ -121,6 +152,10 @@ header .part-2 {
   padding: 3px 15px;
 }
 
+body.dark .search-box {
+  background: #12254e;
+}
+
 .search-box input {
   background: transparent;
   border: 0;
@@ -128,6 +163,12 @@ header .part-2 {
   padding-left: 0px;
   font-size: 14px;
   color: #292929;
+}
+
+body.dark .search-box input,
+body.dark .search-box input::placeholder,
+body.dark .search-box svg {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .search-box input::placeholder {
@@ -178,6 +219,18 @@ header .part-2 {
   padding-left: 10px;
 }
 
+body.dark .MuiPaper-elevation {
+  background-color: #12254e !important;
+}
+
+body.dark .my-acc .user-info,
+body.dark .my-acc .user-info p,
+body.dark .MuiPaper-elevation li *,
+body.dark .MuiPaper-elevation li,
+body.cark .dropdown-list .head h4 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .my-acc .user-info h4 {
   font-size: 15px;
   font-weight: 600;
@@ -219,6 +272,11 @@ header .part-2 {
   background: #ebf6ff;
   color: #000000;
   padding: 10px 15px;
+}
+
+body.dark .dropdown-list li.MuiButtonBase-root {
+  background-color: #12254e !important;
+  background: #12254e !important;
 }
 
 .dropdown-list li.MuiButtonBase-root:hover {
@@ -293,6 +351,10 @@ header .part-2 {
   transition: all 0.3s;
 }
 
+body.dark .main .sidebar-wrapper .sidebar {
+  background: #112143;
+}
+
 .main .sidebar-wrapper .sidebar::-webkit-scrollbar {
   width: 3px !important;
 }
@@ -327,6 +389,10 @@ header .part-2 {
   font-size: 15px !important;
 }
 
+body.dark .main .sidebar-wrapper .sidebar ul li button {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .main .sidebar-wrapper .sidebar ul li button .icon {
   display: flex;
   align-items: center;
@@ -359,6 +425,11 @@ header .part-2 {
   background: #f1f1f1 !important;
 }
 
+body.dark .main .sidebar-wrapper .sidebar ul li button:hover,
+body.dark .main .sidebar-wrapper .sidebar ul li button.active {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
 .main .sidebar-wrapper .sidebar ul li button.active {
   background: #f1f1f1 !important;
 }
@@ -385,6 +456,10 @@ header .part-2 {
   background: rgb(0, 0, 0, 0.2);
 }
 
+body.dark .main .sidebar-wrapper .sidebar ul .submenu::before {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .main .sidebar-wrapper .sidebar ul .submenu li {
   width: 100%;
   list-style: none;
@@ -398,6 +473,10 @@ header .part-2 {
   font-size: 13px;
   font-weight: 500;
   transition: all 0.3s;
+}
+
+body.dark .main .sidebar-wrapper .sidebar ul .submenu li a {
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .main .sidebar-wrapper .sidebar ul .submenu li a:hover {
@@ -473,6 +552,10 @@ header .part-2 {
 .logout-wrapper .logout-box button svg {
   margin-right: 10px;
   font-size: 18px;
+}
+
+body.dark .logout-wrapper .logout-box {
+  background-image: linear-gradient(#183e8c, #163474);
 }
 
 
@@ -626,6 +709,15 @@ header .part-2 {
   border-radius: 10px;
 }
 
+body.dark .card {
+  background: #112143 !important;
+}
+
+body.dark .card .heading,
+body.dark .card-filters .col-md-3 h4 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
 .card .heading {
   font-size: 18px;
   font-weight: bold;
@@ -638,8 +730,45 @@ header .part-2 {
   color: #403e57;
 }
 
-.atble-responsive::-webkit-scrollbar-thumb {
+.input-searchby {
+  background: transparent;
+  height: 40px;
+  border: 1px solid #b8b8b8;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.input-searchby:focus {
+  border: 2px solid #0858f7;
+  outline: none;
+}
+
+body.dark .input-searchby,
+body.dark .css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark .table tbody td,
+body.dark .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon,
+body.dark .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input,
+body.dark .css-bpeome-MuiSvgIcon-root-MuiSelect-icon,
+body.dark .css-1v2lvtn-MuiPaginationItem-root {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
   background: #ccc !important;
+}
+
+body.dark .table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3) !important;
 }
 
 .table .thead-dark th {
@@ -660,6 +789,20 @@ header .part-2 {
   width: 32px !important;
   height: 32px !important;
   margin: 0px 3px;
+}
+
+body.dark .table-bordered td,
+.table-bordered th {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .table tbody .actions button svg {
@@ -721,6 +864,7 @@ table.v-align td .product-box {
   width: 250px;
 }
 
+
 table td .image-wrapper {
   width: 50px;
 }
@@ -749,6 +893,10 @@ table td .image-wrapper {
   padding: 35px 25px;
   background: #ffffff;
   position: relative;
+}
+
+body.dark .login-section {
+  background: #112143;
 }
 
 .login-pattern {
@@ -822,6 +970,10 @@ table td .image-wrapper {
   background: rgba(0, 0, 0, 0.2);
 }
 
+body.dark .login-section .login-box .wrapper .or span.line {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .login-section .login-box .wrapper .or span.txt {
   display: flex;
   justify-content: center;
@@ -833,6 +985,11 @@ table td .image-wrapper {
   border: 1px solid rgba(0, 0, 0, 0.2) !important;
   border-radius: 50%;
   color: #5e5d72;
+}
+
+body.dark .login-section .login-box .wrapper .or span.txt {
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .toggle-show-password {
@@ -851,4 +1008,56 @@ table td .image-wrapper {
   font-weight: bold;
   text-transform: capitalize;
 
+}
+
+.signup-section {
+  background: #f1f1f1;
+  padding: 0px 0px;
+  height: auto;
+}
+
+.signup-section .login-box {
+  background: #f0f0f0;
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  padding: 25px 25px !important;
+}
+
+body.dark .signup-section .login-box {
+  background: #112143;
+}
+
+body.dark .css-i4bv87-MuiSvgIcon-root,
+body.dark .css-j204z7-MuiFormControlLabel-root {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.signup-section .login-box .wrapper {
+  border: 0px !important;
+  background: transparent !important;
+  padding-top: 10px;
+}
+
+.signup-section .part1 {
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+body.dark .signup-section .part1 p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.signup-section .part1 h1 {
+  font-size: 50px;
+  font-weight: 800;
+}
+
+.signup-section .part1 p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+body.dark .signup-text {
+  color: rgba(255, 255, 255, 0.8);
 }

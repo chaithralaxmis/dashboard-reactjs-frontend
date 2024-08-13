@@ -16,7 +16,8 @@ const Login = () => {
   const context = useContext(MyContext);
   useEffect(() => {
     context.setisHideSidebarAndHeader(true);
-  }, context);
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <img src={Pattern} className="login-pattern"></img>
@@ -36,6 +37,7 @@ const Login = () => {
                 </span>
                 <input
                   type="text"
+                  autoFocus
                   className="form-control"
                   placeholder="Enter your email"
                   onFocus={() => focusInput(0)}
@@ -91,7 +93,7 @@ const Login = () => {
             </form>
           </div>
           <div className="wrapper mt-3 card border footer p-3">
-            <span className="text-center">
+            <span className="text-center signup-text">
               Don't have an account?
               <Link to={"/signup"} className="link color ml-2">
                 Register

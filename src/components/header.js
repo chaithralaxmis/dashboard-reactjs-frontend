@@ -75,11 +75,15 @@ const Header = () => {
               <SearchBox />
             </div>
             <div className="col-sm-6 col-md-7 col-lg-7 d-flex align-items-center part-3 justify-content-end">
-              <Button className="rounded-circle mr-3">
-                <MdOutlineLightMode />
-              </Button>
-              <Button className="rounded-circle mr-3">
-                <MdDarkMode />
+              <Button
+                className="rounded-circle mr-3"
+                onClick={() => context.setLightThemeMode(!context.lightTheme)}
+              >
+                {context.lightTheme === true ? (
+                  <MdOutlineLightMode />
+                ) : (
+                  <MdDarkMode />
+                )}
               </Button>
               <Button className="rounded-circle mr-3">
                 <IoCartOutline />

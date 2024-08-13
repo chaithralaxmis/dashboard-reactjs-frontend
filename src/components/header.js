@@ -30,7 +30,6 @@ import { MyContext } from "../App";
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenNotification, setisOpenNotification] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
 
   const openMyAcc = Boolean(anchorEl);
   const openNotication = Boolean(isOpenNotification);
@@ -266,8 +265,10 @@ const Header = () => {
                   </div>
                 </Menu>
               </div>
-              {isLogin === false ? (
-                <Button className="btn-blue btn-lg btn-round">Sign In</Button>
+              {context.isLogin === false ? (
+                <Link to={"/login"}>
+                  <Button className="btn-blue btn-lg btn-round">Sign In</Button>
+                </Link>
               ) : (
                 <div className="my-acc-wrapper">
                   <Button

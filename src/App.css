@@ -30,15 +30,39 @@ body {
   font-weight: 600 !important;
   color: white !important;
   text-transform: capitalize !important;
-  border-radius: 5px !important;
+  border-radius: 8px !important;
 }
 
 .btn-lg {
-  padding: 7px 25px !important;
+  padding: px 25px !important;
+}
+
+.btn-big {
+  padding: 10px 25px !important;
+  font-size: 16px;
 }
 
 .btn-round {
-  border-radius: 30px;
+  border-radius: 30px !important;
+}
+
+.full {
+  max-width: 100%;
+  width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+.link {
+  color: #5e5d72;
+  font-weight: 600;
+}
+
+.link:hover {
+  color: #0858f7;
+}
+
+.link.color {
+  color: #0858f7;
 }
 
 header {
@@ -471,7 +495,7 @@ header .part-2 {
 }
 
 .dashboard-box-wrapper {
-  gap: 20px;
+  gap: 19px;
   width: 100%;
   flex-wrap: wrap;
 }
@@ -517,6 +541,21 @@ header .part-2 {
 .dashboard-box-wrapper-row .graph-box {
   width: 100%;
   height: 100%;
+}
+
+.dashboard-box-wrapper-row .col-md-12 {
+  padding-left: 0px;
+}
+
+@media (min-width: 768px) {
+  .dashboard-box-wrapper-row .graph-box {
+    width: 99%;
+  }
+
+  .dashboard-box-wrapper-row .col-md-12 {
+    padding-left: 15px !important;
+    margin-top: 1rem;
+  }
 }
 
 
@@ -702,4 +741,114 @@ table td .image-wrapper {
 
 .css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
   background-color: #0858f7;
+}
+
+.login-section {
+  width: 100%;
+  height: 100vh;
+  padding: 35px 25px;
+  background: #ffffff;
+  position: relative;
+}
+
+.login-pattern {
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.login-section .login-box {
+  width: 350px;
+  height: auto;
+  margin: auto;
+}
+
+.login-section .login-box .wrapper {
+  width: 100%;
+  background: #f0f0f0;
+  position: relative;
+  z-index: 100;
+  padding: 35px 35px;
+}
+
+.login-section .login-box .wrapper .form-group {
+  margin-bottom: 18px;
+}
+
+.login-section .login-box .wrapper .form-control {
+  background: #ffffff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: 600;
+  height: 45px;
+  padding-left: 40px;
+}
+
+.login-section .login-box .wrapper .form-group.focus .icon svg {
+  color: #0858f7 !important;
+}
+
+.login-section .login-box .wrapper .form-control:focus {
+  border: 1px solid #0858f7;
+}
+
+.login-section .login-box .wrapper .form-group .icon {
+  position: absolute;
+  top: 3px;
+  left: 10px;
+  z-index: 100;
+  font-size: 23px;
+}
+
+.login-section .login-box .wrapper .form-group .icon svg {
+  color: #5e5d5e;
+}
+
+.login-section .login-box .wrapper .link {
+  font-size: 14px;
+}
+
+.login-section .login-box .wrapper .or span.line {
+  display: block;
+  width: 35%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.login-section .login-box .wrapper .or span.txt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 50%;
+  color: #5e5d72;
+}
+
+.toggle-show-password {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  cursor: pointer;
+}
+
+.toggle-show-password svg {
+  font-size: 22px;
+  color: #5e5d72;
+}
+
+.login-with-google {
+  font-weight: bold;
+  text-transform: capitalize;
+
 }

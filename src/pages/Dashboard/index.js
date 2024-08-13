@@ -48,7 +48,7 @@ const Dashboard = () => {
     <>
       <div className="right-content">
         <div className="row dashboard-box-wrapper-row">
-          <div className="col-md-8">
+          <div className="col-lg-8 col-md-12 col-sm-12">
             <div className="dashboard-box-wrapper d-flex">
               <DashboardBox
                 color={["#1da256", "#48d483"]}
@@ -69,7 +69,7 @@ const Dashboard = () => {
               />
             </div>
           </div>
-          <div className="col-md-4 pl-0">
+          <div className="col-lg-4 col-md-12 col-sm-12">
             <div className="graph-box">
               <div className="d-flex align-items-center text-white w-100 bottom-elem">
                 <h6 className="mb-0 mt-0">Toatl Sales</h6>

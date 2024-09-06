@@ -17,8 +17,60 @@ const SignUp = () => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isConfirmShowPassword, setIsConfirmShowPassword] = useState(false);
 
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confPassword, setConfPassword] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const register = async (event) => {
+    event.preventDefault();
+    console.log(name, email, password, confPassword);
+    const errors = validateForm();
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      const res = await fetch("http://localhost:1337/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+    }
+  };
+
   const focusInput = (index) => {
     setInputIndex(index);
+  };
+  const typeText = () => {
+    const errors = validateForm();
+    setErrors(errors);
+  };
+
+  const validateForm = () => {
+    var errors = {};
+    if (name === null || name.length === 0) {
+      errors.name = "Required";
+    }
+    if (email === null || email.length === 0) {
+      errors.email = "Required";
+    }
+    if (password === null || password.length === 0) {
+      errors.password = "Required";
+    }
+    if (confPassword === null || confPassword.length === 0) {
+      errors.confPassword = "Required";
+    } else if (password !== confPassword) {
+      errors.confPassword = "Password does not match";
+    }
+    return errors;
   };
   const context = useContext(MyContext);
   useEffect(() => {
@@ -71,14 +123,19 @@ const SignUp = () => {
                     <input
                       type="text"
                       autoFocus
-                      className="form-control"
+                      className={`form-control ${errors?.name ? "input-error" : ""}`}
                       placeholder="Enter your name"
                       onFocus={() => focusInput(0)}
                       onBlur={() => {
                         setInputIndex(null);
                       }}
+                      onChange={(e) => setName(e.target.value)}
+                      onKeyUp={() => typeText()}
                     />
                   </div>
+                  {errors && errors.name && (
+                    <div className="error">{errors.name}</div>
+                  )}
                   <div
                     className={`form-group position-relative ${inputIndex === 1 && "focus"}`}
                   >
@@ -87,14 +144,19 @@ const SignUp = () => {
                     </span>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors?.email ? "input-error" : ""}`}
                       placeholder="Enter your email"
                       onFocus={() => focusInput(1)}
                       onBlur={() => {
                         setInputIndex(null);
                       }}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onKeyUp={() => typeText()}
                     />
                   </div>
+                  {errors && errors.email && (
+                    <div className="error">{errors.email}</div>
+                  )}
                   <div
                     className={`form-group position-relative ${inputIndex === 2 && "focus"}`}
                   >
@@ -103,12 +165,11 @@ const SignUp = () => {
                     </span>
                     <input
                       type={`${isShowPassword === true ? "true" : "password"}`}
-                      className="form-control"
+                      className={`form-control ${errors?.password ? "input-error" : ""}`}
                       placeholder="Enter your password"
                       onFocus={() => focusInput(2)}
-                      onBlur={() => {
-                        setInputIndex(null);
-                      }}
+                      onChange={(e) => setPassword(e.target.value)}
+                      onKeyUp={() => typeText()}
                     />
                     <span
                       className="toggle-show-password"
@@ -117,6 +178,9 @@ const SignUp = () => {
                       {isShowPassword === true ? <IoMdEyeOff /> : <IoMdEye />}
                     </span>
                   </div>
+                  {errors && errors.password && (
+                    <div className="error">{errors.password}</div>
+                  )}
                   <div
                     className={`form-group position-relative ${inputIndex === 3 && "focus"}`}
                   >
@@ -125,12 +189,11 @@ const SignUp = () => {
                     </span>
                     <input
                       type={`${isConfirmShowPassword === true ? "true" : "password"}`}
-                      className="form-control"
+                      className={`form-control ${errors?.confPassword ? "input-error" : ""}`}
                       placeholder="Confirm your password"
                       onFocus={() => focusInput(3)}
-                      onBlur={() => {
-                        setInputIndex(null);
-                      }}
+                      onChange={(e) => setConfPassword(e.target.value)}
+                      onKeyUp={() => typeText()}
                     />
                     <span
                       className="toggle-show-password"
@@ -145,6 +208,9 @@ const SignUp = () => {
                       )}
                     </span>
                   </div>
+                  {errors && errors.confPassword && (
+                    <div className="error">{errors.confPassword}</div>
+                  )}
 
                   <FormControlLabel
                     control={<Checkbox />}
@@ -152,7 +218,12 @@ const SignUp = () => {
                   />
 
                   <div className="form-group">
-                    <Button className="btn-blue btn-big w-100">Sign UP</Button>
+                    <Button
+                      className="btn-blue btn-big w-100"
+                      onClick={register}
+                    >
+                      Sign UP
+                    </Button>
                   </div>
                   <div className="form-group text-center mb-0">
                     <div className="d-flex align-items-center justify-content-center or mt-3 mb-3">

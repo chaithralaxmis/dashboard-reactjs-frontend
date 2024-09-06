@@ -711,6 +711,7 @@ body.dark .logout-wrapper .logout-box {
 
 body.dark .card {
   background: #112143 !important;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 body.dark .card .heading,
@@ -957,6 +958,18 @@ body.dark .login-section {
 
 .login-section .login-box .wrapper .form-group .icon svg {
   color: #5e5d5e;
+}
+
+.error {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  color: red;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.input-error {
+  border: 1px solid red !important;
 }
 
 .login-section .login-box .wrapper .link {

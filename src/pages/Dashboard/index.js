@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { FaEye, FaPencilAlt, FaUserCircle } from "react-icons/fa";
 import { HiDotsVertical } from "react-icons/hi";
 import DashboardBox from "./components/dashboardBox";
@@ -17,7 +17,8 @@ import Pagination from "@mui/material/Pagination";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { MyContext } from "../../App";
-
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 export const data = [
   ["Task", "Hours per Day"],
   ["Work", 11],
@@ -47,7 +48,20 @@ const Dashboard = () => {
   };
 
   const context = useContext(MyContext);
+  const navigate = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwtDecode(token);
+      if (!user) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } else {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+
     context.setisHideSidebarAndHeader(false);
     window.scrollTo(0, 0);
   });
@@ -252,9 +266,12 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
+
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -300,9 +317,12 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
+
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -348,9 +368,12 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
+
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -396,9 +419,11 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -444,9 +469,12 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
+
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -492,9 +520,12 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
+
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>
@@ -540,9 +571,11 @@ const Dashboard = () => {
                   <td>$38k</td>
                   <td>
                     <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
+                      <Link to={"/product/details"}>
+                        <Button className="secondary" color="secondary">
+                          <FaEye />
+                        </Button>
+                      </Link>
                       <Button className="success" color="success">
                         <FaPencilAlt />
                       </Button>

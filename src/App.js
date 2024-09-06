@@ -2,11 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/header";
+import ProductDetails from "./pages/productDetails";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Sidebar from "./components/sidebar";
 import { createContext, useEffect, useState } from "react";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
+import ProductUpload from "./pages/productUpload";
 const MyContext = createContext();
 function App() {
   const [isToggleSidebar, setIsToggleSidebar] = useState(false);
@@ -56,6 +58,16 @@ function App() {
               <Route path="/dashboard" exact={true} element={<Dashboard />} />
               <Route path="/login" exact={true} element={<Login />} />
               <Route path="/signup" exact={true} element={<SignUp />} />
+              <Route
+                path="/product/details"
+                exact={true}
+                element={<ProductDetails />}
+              />
+              <Route
+                path="/product/upload"
+                exact={true}
+                element={<ProductUpload />}
+              />
             </Routes>
           </div>
         </div>

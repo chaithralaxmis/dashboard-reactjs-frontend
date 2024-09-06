@@ -5,19 +5,70 @@ import { MyContext } from "../App";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import googleIcon from "../assets/images/googleicon.webp";
 const Login = () => {
   const [inputIndex, setInputIndex] = useState(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [invalidCredential, setInvalidCredential] = useState(false);
+
+  const [errors, setErrors] = useState({});
   const focusInput = (index) => {
     setInputIndex(index);
   };
   const context = useContext(MyContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     context.setisHideSidebarAndHeader(true);
     window.scrollTo(0, 0);
   }, []);
+
+  const login = async (event) => {
+    event.preventDefault();
+    const errors = validateForm();
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      const res = await fetch("http://localhost:1337/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const data = await res.json();
+      if (data.status == "ok") {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        setInvalidCredential(true);
+      }
+    }
+  };
+
+  const typeText = () => {
+    const errors = validateForm();
+    setErrors(errors);
+  };
+
+  const validateForm = () => {
+    var errors = {};
+    if (email === null || email.length === 0) {
+      errors.email = "Required";
+    }
+    if (password === null || password.length === 0) {
+      errors.password = "Required";
+    }
+    return errors;
+  };
+
   return (
     <>
       <img src={Pattern} className="login-pattern"></img>
@@ -38,14 +89,19 @@ const Login = () => {
                 <input
                   type="text"
                   autoFocus
-                  className="form-control"
+                  className={`form-control ${errors?.email ? "input-error" : ""}`}
                   placeholder="Enter your email"
                   onFocus={() => focusInput(0)}
                   onBlur={() => {
                     setInputIndex(null);
                   }}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyUp={() => typeText()}
                 />
               </div>
+              {errors && errors.email && (
+                <div className="error">{errors.email}</div>
+              )}
               <div
                 className={`form-group position-relative ${inputIndex === 1 && "focus"}`}
               >
@@ -53,14 +109,15 @@ const Login = () => {
                   <RiLockPasswordFill />
                 </span>
                 <input
-                  type={`${isShowPassword === true ? "true" : "password"}`}
-                  className="form-control"
+                  type={isShowPassword ? "text" : "password"}
+                  className={`form-control ${errors?.password ? "input-error" : ""}`}
                   placeholder="Enter your password"
                   onFocus={() => focusInput(1)}
-                  onBlur={() => {
-                    setInputIndex(null);
-                  }}
+                  onBlur={() => setInputIndex(null)}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyUp={() => typeText()}
                 />
+
                 <span
                   className="toggle-show-password"
                   onClick={() => setIsShowPassword(!isShowPassword)}
@@ -68,10 +125,18 @@ const Login = () => {
                   {isShowPassword === true ? <IoMdEyeOff /> : <IoMdEye />}
                 </span>
               </div>
+              {errors && errors.password && (
+                <div className="error">{errors.password}</div>
+              )}
 
               <div className="form-group">
-                <Button className="btn-blue btn-big w-100">Sign In</Button>
+                <Button className="btn-blue btn-big w-100" onClick={login}>
+                  Sign In
+                </Button>
               </div>
+              {invalidCredential && (
+                <div className="error text-center">Invalid Credential</div>
+              )}
               <div className="form-group text-center mb-0">
                 <Link to={"/forgot-passowrd"} className="link">
                   Forgot Password

@@ -8,14 +8,19 @@ import Sidebar from "./components/sidebar";
 import { createContext, useEffect, useState } from "react";
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
+import { useSelector } from "react-redux";
 import ProductUpload from "./pages/productUpload";
+import ProductCategory from "./pages/productCategory";
+import ProductList from "./pages/productList";
+import ProductBrand from "./pages/productBrand";
+import ProductColor from "./pages/productColor";
 const MyContext = createContext();
 function App() {
   const [isToggleSidebar, setIsToggleSidebar] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isHideSidebarAndHeader, setisHideSidebarAndHeader] = useState(false);
   const [lightTheme, setLightThemeMode] = useState(true);
-
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     if (lightTheme === true) {
       document.body.classList.remove("dark");
@@ -25,6 +30,9 @@ function App() {
       document.body.classList.add("dark");
     }
     localStorage.setItem("lightTheme", lightTheme);
+    if (user && user != null) {
+      setIsLogin(true);
+    }
   }, [lightTheme]);
 
   const values = {
@@ -67,6 +75,26 @@ function App() {
                 path="/product/upload"
                 exact={true}
                 element={<ProductUpload />}
+              />
+              <Route
+                path="/product/category"
+                exact={true}
+                element={<ProductCategory />}
+              />
+              <Route
+                path="/product/list"
+                exact={true}
+                element={<ProductList />}
+              />
+              <Route
+                path="/product/brand"
+                exact={true}
+                element={<ProductBrand />}
+              />
+              <Route
+                path="/product/color"
+                exact={true}
+                element={<ProductColor />}
               />
             </Routes>
           </div>

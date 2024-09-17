@@ -40,6 +40,7 @@ const ProductDetails = () => {
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/01.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                 </Slider>
@@ -48,30 +49,35 @@ const ProductDetails = () => {
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/01.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                   <div className="item">
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/02.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                   <div className="item">
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/03.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                   <div className="item">
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/04.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                   <div className="item">
                     <img
                       src="https://mironcoder-hotash.netlify.app/images/product/single/05.webp"
                       className="w-100"
+                      alt="product"
                     />
                   </div>
                 </Slider>

@@ -1,40 +1,13 @@
-import { useState, useContext, useEffect } from "react";
+import { FormControl, MenuItem, Pagination, Select } from "@mui/material";
 import { Button } from "@mui/material";
-import { FaEye, FaPencilAlt, FaUserCircle } from "react-icons/fa";
-import { HiDotsVertical } from "react-icons/hi";
-import DashboardBox from "./components/dashboardBox";
-import { IoMdCart } from "react-icons/io";
-import { MdDelete, MdShoppingBag } from "react-icons/md";
-import { GiStarsStack } from "react-icons/gi";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { RxCountdownTimer } from "react-icons/rx";
-import { Chart } from "react-google-charts";
-
-import Pagination from "@mui/material/Pagination";
-// import InputLabel from "@mui/material/InputLabel";
-// import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { MyContext } from "../../App";
+import { FaEye, FaPencilAlt } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { deleteProduct, getProducts } from "../../utils/apiFunction";
-export const data = [
-  ["Task", "Hours per Day"],
-  ["Work", 11],
-  ["Eat", 2],
-  ["Commute", 2],
-  ["Watch TV", 2],
-  ["Sleep", 7],
-];
+import { MyContext } from "../App";
+import { useContext, useEffect, useState } from "react";
+import { getProducts } from "../utils/apiFunction";
 
-export const options = {
-  title: "My Daily Activities",
-  backgroundColor: "transparent",
-  chartArea: { width: "100%", height: "100%" },
-};
-const Dashboard = () => {
+const ProductList = () => {
   const [showBy, setShowBy] = useState("");
   const [categoryBy, setCategoryBy] = useState("");
   const [brandBy, setBrandBy] = useState("");
@@ -54,22 +27,8 @@ const Dashboard = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const user = jwtDecode(token);
-      if (!user) {
-        localStorage.removeItem("token");
-        navigate("/login");
-      }
-    } else {
-      localStorage.removeItem("token");
-      navigate("/login");
-    }
-
     context.setisHideSidebarAndHeader(false);
-
     window.scrollTo(0, 0);
-
     getAllProducts();
   }, [page]);
 
@@ -99,90 +58,11 @@ const Dashboard = () => {
     console.log(newPage, "nepage");
     setPage(newPage);
   };
-
-  const deleteSelProduct = async (data) => {
-    try {
-      await deleteProduct(data._id);
-      getAllProducts();
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
   return (
     <>
-      <div className="right-content">
-        <div className="row dashboard-box-wrapper-row">
-          <div className="col-lg-8 col-md-12 col-sm-12">
-            <div className="dashboard-box-wrapper d-flex">
-              <DashboardBox
-                color={["#1da256", "#48d483"]}
-                grow={true}
-                icon={<FaUserCircle />}
-              />
-              <DashboardBox
-                color={["#c012e2", "#eb64fe"]}
-                icon={<IoMdCart />}
-              />
-              <DashboardBox
-                color={["#2c78e5", "#60aff5"]}
-                icon={<MdShoppingBag />}
-              />
-              <DashboardBox
-                color={["#e1950e", "#f3cd29"]}
-                icon={<GiStarsStack />}
-              />
-            </div>
-          </div>
-          <div className="col-lg-4 col-md-12 col-sm-12">
-            <div className="graph-box">
-              <div className="d-flex align-items-center text-white w-100 bottom-elem">
-                <h6 className="mb-0 mt-0">Toatl Sales</h6>
-                <div className="ml-auto">
-                  <Button className="toggle-icon" onClick={handleClick}>
-                    <HiDotsVertical />
-                  </Button>
-                  <Menu
-                    id="long-menu"
-                    MenuListProps={{
-                      "aria-labelledby": "long-button",
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={handleClose}>
-                      {" "}
-                      <RxCountdownTimer className="long-menu-timer" /> Last Day
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <RxCountdownTimer className="long-menu-timer" />
-                      Last Week
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <RxCountdownTimer className="long-menu-timer" />
-                      Last Month
-                    </MenuItem>
-                    <MenuItem onClick={handleClose}>
-                      <RxCountdownTimer className="long-menu-timer" />
-                      Last Year
-                    </MenuItem>
-                  </Menu>
-                </div>
-              </div>
-              <h3 className="text-white font-weight-bold">$3,787,681.00</h3>
-              <p>$3,578.90 in last month</p>
-              <Chart
-                chartType="PieChart"
-                data={data}
-                options={options}
-                width={"100%"}
-                height={"170px"}
-              />
-            </div>
-          </div>
-        </div>
+      <div className="right-content w-100">
         <div className="card shadow border-0 p-3 mt-4">
-          <h3 className="heading">Best Selling Products</h3>
+          <h3 className="heading">Products</h3>
           <div className="row card-filters mt-3">
             <div className="col-md-3">
               <h4>SHOW BY</h4>
@@ -318,11 +198,7 @@ const Dashboard = () => {
                         <Button className="success" color="success">
                           <FaPencilAlt />
                         </Button>
-                        <Button
-                          className="error"
-                          color="error"
-                          onClick={() => deleteSelProduct(product)}
-                        >
+                        <Button className="error" color="error">
                           <MdDelete />
                         </Button>
                       </div>
@@ -354,5 +230,4 @@ const Dashboard = () => {
     </>
   );
 };
-
-export default Dashboard;
+export default ProductList;

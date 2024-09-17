@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.input-class {
+  padding: 8.5px 14px;
+  border: 1px solid #cdc4c4;
+  border-radius: 4px;
+}
+
+.input-class:focus-visible {
+  outline-color: #007bff;
+}
+
+.select-class .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 8.5px 14px;
+}
+
+.remove-icon {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  cursor: pointer;
+}

@@ -11,7 +11,7 @@ import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import googleIcon from "../assets/images/googleicon.webp";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-
+import { register } from "../utils/apiFunction";
 const SignUp = () => {
   const [inputIndex, setInputIndex] = useState(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -23,35 +23,23 @@ const SignUp = () => {
   const [confPassword, setConfPassword] = useState(null);
   const [errors, setErrors] = useState({});
 
-  const register = async (event) => {
+  const registerUser = async (event) => {
     event.preventDefault();
     console.log(name, email, password, confPassword);
     const errors = validateForm();
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      const res = await fetch("http://localhost:1337/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
+      const res = await register({
+        name,
+        email,
+        password,
       });
-      const data = await res.json();
-      console.log(data);
     }
   };
 
   const focusInput = (index) => {
     setInputIndex(index);
-  };
-  const typeText = () => {
-    const errors = validateForm();
-    setErrors(errors);
   };
 
   const validateForm = () => {
@@ -79,7 +67,7 @@ const SignUp = () => {
   }, []);
   return (
     <>
-      <img src={Pattern} className="login-pattern"></img>
+      <img src={Pattern} className="login-pattern" alt=""></img>
       <section className="login-section signup-section">
         <div className="row">
           <div className="col-md-8 d-flex align-items-center justify-content-center flex-column part1">
@@ -130,7 +118,6 @@ const SignUp = () => {
                         setInputIndex(null);
                       }}
                       onChange={(e) => setName(e.target.value)}
-                      onKeyUp={() => typeText()}
                     />
                   </div>
                   {errors && errors.name && (
@@ -151,7 +138,6 @@ const SignUp = () => {
                         setInputIndex(null);
                       }}
                       onChange={(e) => setEmail(e.target.value)}
-                      onKeyUp={() => typeText()}
                     />
                   </div>
                   {errors && errors.email && (
@@ -169,7 +155,6 @@ const SignUp = () => {
                       placeholder="Enter your password"
                       onFocus={() => focusInput(2)}
                       onChange={(e) => setPassword(e.target.value)}
-                      onKeyUp={() => typeText()}
                     />
                     <span
                       className="toggle-show-password"
@@ -193,7 +178,6 @@ const SignUp = () => {
                       placeholder="Confirm your password"
                       onFocus={() => focusInput(3)}
                       onChange={(e) => setConfPassword(e.target.value)}
-                      onKeyUp={() => typeText()}
                     />
                     <span
                       className="toggle-show-password"
@@ -220,7 +204,7 @@ const SignUp = () => {
                   <div className="form-group">
                     <Button
                       className="btn-blue btn-big w-100"
-                      onClick={register}
+                      onClick={registerUser}
                     >
                       Sign UP
                     </Button>
@@ -235,8 +219,13 @@ const SignUp = () => {
                       variant="outlined"
                       className="w-100 btn-big login-with-google"
                     >
-                      <img src={googleIcon} width="30" height="30" /> &nbsp;
-                      Sign In With Google
+                      <img
+                        src={googleIcon}
+                        width="30"
+                        height="30"
+                        alt="sign in with google"
+                      />{" "}
+                      &nbsp; Sign In With Google
                     </Button>
                   </div>
                 </form>

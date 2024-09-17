@@ -55,13 +55,20 @@ const Sidebar = () => {
             >
               <ul className="submenu">
                 <li>
-                  <Link to="#">Product List</Link>
+                  <Link to={"/product/list"}>Product List</Link>
                 </li>
-                <li>
-                  <Link to="#">Product View</Link>
-                </li>
+
                 <li>
                   <Link to={"/product/upload"}>Product Upload</Link>
+                </li>
+                <li>
+                  <Link to={"/product/category"}>Product Category</Link>
+                </li>
+                <li>
+                  <Link to={"/product/brand"}>Product Brand</Link>
+                </li>
+                <li>
+                  <Link to={"/product/color"}>Product Color</Link>
                 </li>
               </ul>
             </div>

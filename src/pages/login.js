@@ -7,6 +7,10 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import googleIcon from "../assets/images/googleicon.webp";
+import { login } from "../utils/apiFunction";
+import { addUser } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
+
 const Login = () => {
   const [inputIndex, setInputIndex] = useState(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -21,35 +25,38 @@ const Login = () => {
   };
   const context = useContext(MyContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     context.setisHideSidebarAndHeader(true);
     window.scrollTo(0, 0);
   }, []);
 
-  const login = async (event) => {
+  const userLogin = async (event) => {
     event.preventDefault();
-    const errors = validateForm();
-    setErrors(errors);
+    try {
+      const errors = validateForm();
+      setErrors(errors);
 
-    if (Object.keys(errors).length === 0) {
-      const res = await fetch("http://localhost:1337/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      if (Object.keys(errors).length === 0) {
+        const res = await login({
           email,
           password,
-        }),
-      });
-      const data = await res.json();
-      if (data.status == "ok") {
-        localStorage.setItem("token", data.token);
-        navigate("/");
-      } else {
-        setInvalidCredential(true);
+        });
+        const data = await res.data.data;
+        console.log(data);
+        if (res.data.status === "ok") {
+          localStorage.setItem("token", data.token);
+          dispatch(addUser(data));
+          navigate("/");
+        } else {
+          setInvalidCredential(true);
+        }
       }
+    } catch (error) {
+      setInvalidCredential(true);
+
+      console.log(error);
     }
   };
 
@@ -71,7 +78,7 @@ const Login = () => {
 
   return (
     <>
-      <img src={Pattern} className="login-pattern"></img>
+      <img src={Pattern} className="login-pattern" alt="background"></img>
       <section className="login-section">
         <div className="login-box">
           <div className="logo text-center">
@@ -130,7 +137,7 @@ const Login = () => {
               )}
 
               <div className="form-group">
-                <Button className="btn-blue btn-big w-100" onClick={login}>
+                <Button className="btn-blue btn-big w-100" onClick={userLogin}>
                   Sign In
                 </Button>
               </div>
@@ -151,8 +158,13 @@ const Login = () => {
                   variant="outlined"
                   className="w-100 btn-big login-with-google"
                 >
-                  <img src={googleIcon} width="30" height="30" /> &nbsp; Sign In
-                  With Google
+                  <img
+                    src={googleIcon}
+                    width="30"
+                    height="30"
+                    alt="sign in with google"
+                  />{" "}
+                  &nbsp; Sign In With Google
                 </Button>
               </div>
             </form>

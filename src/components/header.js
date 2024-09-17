@@ -18,14 +18,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Avatar } from "@mui/material";
 import { MyContext } from "../App";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -35,6 +33,7 @@ const Header = () => {
   const openNotication = Boolean(isOpenNotification);
 
   const context = useContext(MyContext);
+  const { user } = useSelector((state) => state.user);
 
   const handleOpenMyAcc = (event) => {
     setAnchorEl(event.currentTarget);
@@ -48,6 +47,9 @@ const Header = () => {
   const handleCloseNotification = () => {
     setisOpenNotification(false);
   };
+  useEffect(() => {
+    console.log(user);
+  });
   return (
     <>
       <header className="d-flex align-items-center">
@@ -285,8 +287,8 @@ const Header = () => {
                       </span>
                     </div>
                     <div className="user-info">
-                      <h4>Chaithralaxmi</h4>
-                      <p className="mb-0">@chai</p>
+                      <h4>{user?.name}</h4>
+                      <p className="mb-0">{user?.email}</p>
                     </div>
                   </Button>
                   <Menu

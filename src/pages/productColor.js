@@ -16,16 +16,31 @@ import {
   updateProductColor,
 } from "../utils/apiFunction";
 import { IoMdDoneAll } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const ProductColor = () => {
   const [color, setColor] = useState("");
+  const [editColor, setEditColor] = useState("");
   const [colors, setColors] = useState([]);
   const [edit, setEdit] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwtDecode(token);
+      if (!user) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } else {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     getProductColors();
-  }, []);
+  }, [color]);
 
   const getProductColors = async () => {
     try {
@@ -48,9 +63,9 @@ const ProductColor = () => {
   const updateColor = async () => {
     try {
       await updateProductColor(selectedColor._id, {
-        color,
+        color: editColor,
       });
-      setColor("");
+      setEditColor("");
       setSelectedColor(null);
       getProductColors();
     } catch (error) {
@@ -59,9 +74,10 @@ const ProductColor = () => {
   };
 
   const handleEdit = (value) => {
+    setEditColor(value.color);
     setSelectedColor(value);
-    setColor(value.color);
-
+    console.log(value.color);
+    console.log(editColor);
     setEdit(true);
   };
 
@@ -133,9 +149,10 @@ const ProductColor = () => {
                       {selectedColor?._id === color._id && edit ? (
                         <div>
                           <Input
+                            id={`edit+${color._id}`}
                             placeholder="Edit color"
-                            value={color}
-                            onChange={(e) => setColor(e.target.value)}
+                            value={editColor}
+                            onChange={(e) => setEditColor(e.target.value)}
                           />
                           <Button
                             onClick={updateColor}

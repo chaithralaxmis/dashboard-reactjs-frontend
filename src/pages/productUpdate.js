@@ -15,6 +15,7 @@ import { RxCross2 } from "react-icons/rx";
 import ListSubheader from "@mui/material/ListSubheader";
 import {
   addProduct,
+  getAProduct,
   getProductBrand,
   getProductCategory,
   getProductColor,
@@ -22,8 +23,8 @@ import {
   updateProduct,
   uploadProductImages,
 } from "../utils/apiFunction";
+import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 const names = [
   "Oliver Hansen",
   "Van Henry",
@@ -59,7 +60,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const ProductUpload = () => {
+const ProductUpdate = () => {
   const [product, setProduct] = useState({
     title: "",
     description: "",
@@ -161,11 +162,31 @@ const ProductUpload = () => {
       localStorage.removeItem("token");
       navigate("/login");
     }
+    getProduct();
     getProductCategories();
     getProductBrands();
     getProductColors();
     console.log("use effect");
   }, []);
+  const { id } = useParams();
+
+  const getProduct = async () => {
+    const res = await getAProduct(id);
+    if (res.data.status === "ok") {
+      let product = {
+        ...res.data.data,
+        category: res.data.data.category._id,
+        subCategory: res.data.data.subCategory._id,
+        brand: res.data.data.brand._id,
+        color: res.data.data.color.map((obj) => obj._id),
+      };
+
+      let images = product.images.map((obj) => obj.url);
+      setImagePreviews(images);
+
+      setProduct(product);
+    }
+  };
 
   const getProductCategories = async () => {
     try {
@@ -251,7 +272,7 @@ const ProductUpload = () => {
     <>
       <div className="right-content w-100">
         <div className="card p-3">
-          <h4>Add Product</h4>
+          <h4>Edit Product</h4>
           <form className="mt-4">
             <div className="row">
               <div className="col-lg-6 col-md-6 col-sm-12">
@@ -264,6 +285,7 @@ const ProductUpload = () => {
                     name="name"
                     id="name"
                     onKeyUp={(e) => updateInputValue("title", e.target.value)}
+                    value={product.title}
                   ></input>
                 </div>
               </div>
@@ -281,6 +303,7 @@ const ProductUpload = () => {
                     }
                     rows="3"
                     max="3"
+                    value={product.description}
                   ></textarea>
                 </div>
               </div>
@@ -294,6 +317,7 @@ const ProductUpload = () => {
                     name="name"
                     id="name"
                     onKeyUp={(e) => updateInputValue("price", e.target.value)}
+                    value={product.price}
                   ></input>
                 </div>
               </div>
@@ -401,6 +425,7 @@ const ProductUpload = () => {
                     onKeyUp={(e) =>
                       updateInputValue("quantity", e.target.value)
                     }
+                    value={product.quantity}
                   ></input>
                 </div>
               </div>
@@ -513,10 +538,12 @@ const ProductUpload = () => {
                           onClick={(e) => removeImage(index)}
                           className="remove-icon"
                         />
+                        {/* 
+                        
                         <ImageListItemBar
                           title={`${product?.images[index]?.name}`}
                           position="below"
-                        />
+                        /> */}
                       </ImageListItem>
                     ))}
                   </ImageList>
@@ -528,7 +555,7 @@ const ProductUpload = () => {
                   className="mr-3"
                   onClick={handleAddProduct}
                 >
-                  Add
+                  Update
                 </Button>
               </div>
             </div>
@@ -539,4 +566,4 @@ const ProductUpload = () => {
   );
 };
 
-export default ProductUpload;
+export default ProductUpdate;

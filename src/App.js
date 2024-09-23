@@ -14,6 +14,7 @@ import ProductCategory from "./pages/productCategory";
 import ProductList from "./pages/productList";
 import ProductBrand from "./pages/productBrand";
 import ProductColor from "./pages/productColor";
+import ProductUpdate from "./pages/productUpdate";
 const MyContext = createContext();
 function App() {
   const [isToggleSidebar, setIsToggleSidebar] = useState(false);
@@ -67,9 +68,14 @@ function App() {
               <Route path="/login" exact={true} element={<Login />} />
               <Route path="/signup" exact={true} element={<SignUp />} />
               <Route
-                path="/product/details"
+                path="/product/details/:id"
                 exact={true}
                 element={<ProductDetails />}
+              />
+              <Route
+                path="/product/update/:id"
+                exact={true}
+                element={<ProductUpdate />}
               />
               <Route
                 path="/product/upload"

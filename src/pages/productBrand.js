@@ -16,6 +16,8 @@ import {
   updateProductBrand,
 } from "../utils/apiFunction";
 import { IoMdDoneAll } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const ProductBrand = () => {
   const [title, setTitle] = useState("");
@@ -23,7 +25,19 @@ const ProductBrand = () => {
   const [edit, setEdit] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwtDecode(token);
+      if (!user) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } else {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     getProductBrands();
   }, []);
 

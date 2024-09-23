@@ -4,13 +4,29 @@ import { useState } from "react";
 import { FaBell, FaProductHunt, FaShoppingCart } from "react-icons/fa";
 import { IoIosArrowForward, IoIosSettings } from "react-icons/io";
 import { MdDashboard, MdMessage } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../utils/apiFunction";
+import { useSelector } from "react-redux";
+
 // import { MyContext } from "../App";
 
 const Sidebar = () => {
+  const { user } = useSelector((state) => state.user);
   const [activeTab, setActiveTab] = useState(0);
   const [isToggleSubmenu, setIsToggleSubmenu] = useState(false);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout(user.email);
 
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      localStorage.removeItem("token");
+      navigate("/login");
+      throw new Error(error);
+    }
+  };
   // const context = useContext(MyContext);
 
   const onOpenSubMenu = (index) => {
@@ -31,9 +47,9 @@ const Sidebar = () => {
                   <MdDashboard />
                 </span>
                 Dashboard
-                <span className="arrow">
+                {/* <span className="arrow">
                   <IoIosArrowForward />
-                </span>
+                </span> */}
               </Button>
             </Link>
           </li>
@@ -143,7 +159,7 @@ const Sidebar = () => {
 
         <div className="logout-wrapper ">
           <div className="logout-box d-flex align-items-center justify-content-center">
-            <Button variant="contained">
+            <Button variant="contained" onClick={handleLogout}>
               <Logout />
               Logout
             </Button>

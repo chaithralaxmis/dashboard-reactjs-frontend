@@ -16,7 +16,24 @@ export const login = (data) => {
   });
 };
 
+export const logout = (data) => {
+  return noAuthRequest({
+    url: "/logout",
+    method: "get",
+    params: {
+      email: data,
+    },
+  });
+};
+
 // products start
+
+export const getAProduct = (id) => {
+  return authRequest({
+    url: `/product/${id}`,
+    method: "get",
+  });
+};
 
 export const getProducts = (data) => {
   return authRequest({
@@ -75,7 +92,7 @@ export const getProductCategory = (data) => {
 
 export const getProductSubCategory = (id) => {
   return authRequest({
-    url: `/category/sub/${id}`,
+    url: `/category/all-subcategory/${id}`,
     method: "get",
   });
 };

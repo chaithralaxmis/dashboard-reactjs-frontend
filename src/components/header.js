@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import logo from "../assets/images/logo.svg";
 import Button from "@mui/material/Button";
 import {
@@ -24,6 +24,7 @@ import { Avatar } from "@mui/material";
 import { MyContext } from "../App";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { logout } from "../utils/apiFunction";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,12 +35,27 @@ const Header = () => {
 
   const context = useContext(MyContext);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleOpenMyAcc = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseMyAcc = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      handleCloseMyAcc();
+      await logout(user.email);
+
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      localStorage.removeItem("token");
+      navigate("/login");
+      throw new Error(error);
+    }
   };
 
   const handleOpenNotification = () => [setisOpenNotification(true)];
@@ -312,7 +328,7 @@ const Header = () => {
                       </ListItemIcon>
                       Reset Password
                     </MenuItem>
-                    <MenuItem onClick={handleCloseMyAcc}>
+                    <MenuItem onClick={handleLogout}>
                       <ListItemIcon>
                         <Logout fontSize="small" />
                       </ListItemIcon>

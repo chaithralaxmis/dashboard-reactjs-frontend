@@ -2,6 +2,7 @@ import axios from "axios";
 const noAuthRequest = axios.create({
   baseURL: "http://localhost:1337/api",
 });
+
 noAuthRequest.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger

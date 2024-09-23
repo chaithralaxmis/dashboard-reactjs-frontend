@@ -1074,3 +1074,8 @@ body.dark .signup-section .part1 p {
 body.dark .signup-text {
   color: rgba(255, 255, 255, 0.8);
 }
+
+.productdetails-color-box {
+  width: 60px;
+  height: 60px;
+}

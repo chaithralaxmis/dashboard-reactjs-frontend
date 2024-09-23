@@ -35,9 +35,6 @@ export const options = {
   chartArea: { width: "100%", height: "100%" },
 };
 const Dashboard = () => {
-  const [showBy, setShowBy] = useState("");
-  const [categoryBy, setCategoryBy] = useState("");
-  const [brandBy, setBrandBy] = useState("");
   const [products, setProducts] = useState([]);
   const [productPagination, setProductPagination] = useState({});
   const [page, setPage] = useState(1);
@@ -183,79 +180,7 @@ const Dashboard = () => {
         </div>
         <div className="card shadow border-0 p-3 mt-4">
           <h3 className="heading">Best Selling Products</h3>
-          <div className="row card-filters mt-3">
-            <div className="col-md-3">
-              <h4>SHOW BY</h4>
-              <FormControl size="small" className="w-100">
-                <Select
-                  value={showBy}
-                  onChange={(e) => {
-                    setShowBy(e.target.value);
-                  }}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  className="w-100"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-3">
-              <h4>CATEGORY BY</h4>
-              <FormControl size="small" className="w-100">
-                <Select
-                  value={categoryBy}
-                  onChange={(e) => {
-                    setCategoryBy(e.target.value);
-                  }}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  className="w-100"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-3">
-              <h4>BRAND BY</h4>
-              <FormControl size="small" className="w-100">
-                <Select
-                  value={brandBy}
-                  onChange={(e) => {
-                    setBrandBy(e.target.value);
-                  }}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  className="w-100"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="col-md-3">
-              <h4>SEARCH BY</h4>
-              <input
-                type="text"
-                placeholder="id/name/category/brand"
-                className="w-100 input-searchby"
-              />
-            </div>
-          </div>
+
           <div className="table-responsive mt-3">
             <table className="table table-bordered v-align">
               <thead className="thead-dark">
@@ -280,11 +205,19 @@ const Dashboard = () => {
                       <div className="d-flex align-items-center product-box">
                         <div className="image-wrapper">
                           <div className="img">
-                            <img
-                              src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
-                              alt="product"
-                              className="w-100"
-                            ></img>
+                            {product.images.length == 0 ? (
+                              <img
+                                src="https://res.cloudinary.com/dzmyuwigf/image/upload/v1726738754/fqknznh1ciefxhkt7l59.jpg"
+                                alt="product"
+                                className="w-100"
+                              />
+                            ) : (
+                              <img
+                                src={product.images[0].url}
+                                alt="product"
+                                className="w-100"
+                              />
+                            )}
                           </div>
                         </div>
                         <div className="info">
@@ -293,8 +226,11 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </td>
-                    <td> {product?.category} </td>
-                    <td>{product?.brand}</td>
+                    <td>
+                      {" "}
+                      {product?.category?.title} / {product?.subCategory?.title}
+                    </td>
+                    <td>{product?.brand?.title}</td>
                     <td>
                       <div style={{ width: "70px" }}>
                         <del className="old">{product.price}</del>
@@ -309,15 +245,16 @@ const Dashboard = () => {
                     {/* <td>$38k</td> */}
                     <td>
                       <div className="actions d-flex align-items-center">
-                        <Link to={"/product/details"}>
+                        <Link to={`/product/details/${product._id}`}>
                           <Button className="secondary" color="secondary">
                             <FaEye />
                           </Button>
                         </Link>
-
-                        <Button className="success" color="success">
-                          <FaPencilAlt />
-                        </Button>
+                        <Link to={`/product/update/${product._id}`}>
+                          <Button className="success" color="success">
+                            <FaPencilAlt />
+                          </Button>
+                        </Link>
                         <Button
                           className="error"
                           color="error"

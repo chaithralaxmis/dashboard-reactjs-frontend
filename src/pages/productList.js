@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 import { useContext, useEffect, useState } from "react";
 import { getProducts } from "../utils/apiFunction";
+import { jwtDecode } from "jwt-decode";
 
 const ProductList = () => {
   const [showBy, setShowBy] = useState("");
@@ -27,6 +28,17 @@ const ProductList = () => {
   const context = useContext(MyContext);
   const navigate = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwtDecode(token);
+      if (!user) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } else {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     context.setisHideSidebarAndHeader(false);
     window.scrollTo(0, 0);
     getAllProducts();
@@ -160,11 +172,19 @@ const ProductList = () => {
                       <div className="d-flex align-items-center product-box">
                         <div className="image-wrapper">
                           <div className="img">
-                            <img
-                              src="https://mironcoder-hotash.netlify.app/images/product/01.webp"
-                              alt="product"
-                              className="w-100"
-                            ></img>
+                            {product.images.length == 0 ? (
+                              <img
+                                src="https://res.cloudinary.com/dzmyuwigf/image/upload/v1726738754/fqknznh1ciefxhkt7l59.jpg"
+                                alt="product"
+                                className="w-100"
+                              />
+                            ) : (
+                              <img
+                                src={product.images[0].url}
+                                alt="product"
+                                className="w-100"
+                              />
+                            )}
                           </div>
                         </div>
                         <div className="info">
@@ -173,8 +193,12 @@ const ProductList = () => {
                         </div>
                       </div>
                     </td>
-                    <td> {product?.category} </td>
-                    <td>{product?.brand}</td>
+                    <td>
+                      {" "}
+                      {product?.category?.title} / {product?.subCategory?.title}
+                    </td>
+                    <td>{product?.brand?.title}</td>
+
                     <td>
                       <div style={{ width: "70px" }}>
                         <del className="old">{product.price}</del>

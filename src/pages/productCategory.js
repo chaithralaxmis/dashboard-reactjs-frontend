@@ -15,35 +15,66 @@ import {
   addProductCategory,
   deleteProductCategory,
   getProductCategory,
+  getProductSubCategory,
   updateProductCategory,
 } from "../utils/apiFunction";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const ProductCategory = () => {
   const [title, setTitle] = useState("");
   const [parentCategory, setParentCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [parentCategories, setParentCategories] = useState([]);
+  const [subcategories, setSubCategories] = useState([]);
   const [edit, setEdit] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [finalCategory, setFinalCategory] = useState(null);
+  const [subCategory, setSubCategory] = useState(null);
   const [expanded, setExpanded] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = jwtDecode(token);
+      if (!user) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    } else {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     getProductCategories();
   }, []);
 
   const getProductCategories = async () => {
     try {
       const res = await getProductCategory();
+      const res2 = await getProductCategory("parent");
       setCategories(res.data.data);
+      setParentCategories(res2.data.data);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
     }
   };
 
+  const getProductSubCategories = async (value) => {
+    try {
+      const res = await getProductSubCategory(value);
+      setSubCategories(res.data.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   const addCategory = async () => {
     try {
-      await addProductCategory({ title, parentCategory });
+      await addProductCategory({ title, finalCategory });
       setTitle("");
       setParentCategory(null);
+      setFinalCategory(null);
+
       getProductCategories(); // Refresh the list after adding
     } catch (error) {
       console.error("Failed to add category:", error);
@@ -65,16 +96,33 @@ const ProductCategory = () => {
   };
 
   const handleCategoryChange = (event) => {
-    console.log("Selected Value:", event.target.value); // Debugging
     setParentCategory(event.target.value);
+    setFinalCategory(event.target.value);
+    getProductSubCategories(event.target.value);
+  };
+
+  const handleSubCategory = (event) => {
+    setSubCategory(event.target.value);
+    setFinalCategory(event.target.value);
   };
 
   const handleEdit = (value) => {
     setSelectedCategory(value);
     setTitle(value.title);
-    setParentCategory(value.parentCategory?._id);
-    setExpanded(true);
+    if (value.parentCategory) {
+      const isParent = parentCategories.some(
+        (category) => category._id === value?.parentCategory?._id
+      );
+      if (isParent) {
+        setParentCategory(value.parentCategory?._id);
+      } else {
+        getProductSubCategories(value?.parentCategory?.parentCategory);
+        setParentCategory(value?.parentCategory?.parentCategory);
+        setSubCategory(value?.parentCategory?._id);
+      }
+    }
 
+    setExpanded(true);
     setEdit(true);
   };
 
@@ -128,7 +176,7 @@ const ProductCategory = () => {
                       <MenuItem value="" disabled>
                         Select a category
                       </MenuItem>
-                      {categories.map((category) => (
+                      {parentCategories.map((category) => (
                         <MenuItem value={category._id} key={category._id}>
                           {category.title}
                         </MenuItem>
@@ -137,15 +185,39 @@ const ProductCategory = () => {
                   </FormControl>
                 </div>
               </div>
-              <div className="my-3 text-right w-100">
-                <Button
-                  variant="contained"
-                  className="mr-3"
-                  onClick={edit === true ? updateCategory : addCategory}
-                >
-                  {edit === true ? "Update" : "Add"}
-                </Button>
+            </div>
+            <div className="row">
+              <div className="col-lg-6 col-md-6 col-sm-12">
+                <div className="form-group">
+                  <label htmlFor="parentCategory">Sub Category</label>
+                  <FormControl size="small" className="w-100">
+                    <Select
+                      value={subCategory}
+                      onChange={handleSubCategory}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Parent Category" }}
+                    >
+                      <MenuItem value="" disabled>
+                        Select sub category
+                      </MenuItem>
+                      {subcategories.map((category) => (
+                        <MenuItem value={category._id} key={category._id}>
+                          {category.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
               </div>
+            </div>
+            <div className="my-3 text-right w-100">
+              <Button
+                variant="contained"
+                className="mr-3"
+                onClick={edit === true ? updateCategory : addCategory}
+              >
+                {edit === true ? "Update" : "Add"}
+              </Button>
             </div>
           </form>
         </AccordionDetails>

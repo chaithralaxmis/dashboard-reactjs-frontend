@@ -167,6 +167,22 @@ const ProductUpload = () => {
     console.log("use effect");
   }, []);
 
+  const menuItems = subCategories.flatMap((category) => {
+    if (category.subCategory.length > 0) {
+      return [
+        <ListSubheader className="main-menu" key={category.title}>
+          {category.title}
+        </ListSubheader>,
+        ...category.subCategory.map((subcat) => (
+          <MenuItem className="sub-menu" value={subcat._id} key={subcat._id}>
+            {subcat.title}
+          </MenuItem>
+        )),
+      ];
+    }
+    return [];
+  });
+
   const getProductCategories = async () => {
     try {
       const res = await getProductCategory("parent");
@@ -357,7 +373,7 @@ const ProductUpload = () => {
                   <FormControl
                     id="sub-cat"
                     size="small"
-                    className="w-100  select-dropdown"
+                    className="w-100 select-dropdown"
                   >
                     <InputLabel htmlFor="grouped-select">
                       Select sub category
@@ -370,21 +386,7 @@ const ProductUpload = () => {
                       }
                       value={product.subCategory}
                     >
-                      {subCategories.map((category) => [
-                        <ListSubheader className="main-menu">
-                          {category.title}
-                        </ListSubheader>,
-                        ...(category.subCategory.length > 0 &&
-                          category.subCategory.map((subcat) => (
-                            <MenuItem
-                              className="sub-menu"
-                              value={subcat._id}
-                              key={subcat._id}
-                            >
-                              {subcat.title}
-                            </MenuItem>
-                          ))),
-                      ])}
+                      {menuItems}
                     </Select>
                   </FormControl>
                 </div>

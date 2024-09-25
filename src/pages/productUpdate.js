@@ -79,6 +79,8 @@ const ProductUpdate = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [colors, setColors] = useState([]);
+  const [removedImage, setRemovedImage] = useState(false);
+
   const navigate = useNavigate();
   const handleChange = (event, key) => {
     const {
@@ -95,8 +97,9 @@ const ProductUpdate = () => {
     const { files } = event.target;
     console.log("Selected files:", files);
 
-    const newFiles = Array.from(files);
+    let newFiles = Array.from(files);
     console.log("Files array:", newFiles);
+    newFiles.forEach((file) => (file.reUpload = true));
 
     // Convert files to data URLs
     const newImagePreviews = await Promise.all(
@@ -116,8 +119,6 @@ const ProductUpdate = () => {
       ...prevProduct,
       images: [...prevProduct["images"], ...newFiles],
     }));
-
-    console.log("Updated Image Previews:", newImagePreviews);
   };
 
   const updateInputValue = (key, value) => {
@@ -148,6 +149,7 @@ const ProductUpdate = () => {
       ...prevProduct,
       images: updatedFiles,
     }));
+    setRemovedImage(true);
   };
 
   useEffect(() => {
@@ -223,45 +225,60 @@ const ProductUpdate = () => {
     }
   };
 
-  const handleAddProduct = async () => {
+  const handleUpdateProduct = async () => {
     try {
       let payload = { ...product };
       delete payload.images;
-      const res = await addProduct(payload);
+      const res = await updateProduct(product._id, payload);
       console.log(res, res.data);
 
       if (res.data.status === "ok") {
-        const id = res.data.product._id;
         console.log(product.images);
 
         if (product.images.length > 0) {
           let form = new FormData();
           product.images.forEach((image, index) => {
-            form.append("images", image);
+            if (image.reUpload === true) {
+              form.append("images", image);
+            }
           });
-          const res2 = await uploadProductImages(form);
-          if (res2.data.status === "ok") {
-            var imageUrls = res2.data.data;
-            const res3 = await updateProduct(id, {
-              images: imageUrls,
-            });
-            if (res3.data.status === "ok") {
-              setImagePreviews([]);
-              setProduct({
-                title: "",
-                description: "",
-                price: "",
-                brand: "",
-                quantity: "",
-                sold: "",
-                images: "",
-                color: [],
-                tags: [],
-                category: "",
-                subCategory: "",
+          if (Array.from(form.keys()).length > 0) {
+            const res2 = await uploadProductImages(form);
+            if (res2.data.status === "ok") {
+              var newImageUrls = res2.data.data;
+              var imageUrls = [...newImageUrls, ...product.images];
+              console.log(imageUrls);
+
+              imageUrls = imageUrls.filter((obj) => obj.url);
+              console.log(imageUrls);
+
+              const res3 = await updateProduct(product._id, {
+                images: imageUrls,
               });
+              if (res3.data.status === "ok") {
+                setRemovedImage(false);
+                setImagePreviews([]);
+                setProduct({
+                  title: "",
+                  description: "",
+                  price: "",
+                  brand: "",
+                  quantity: "",
+                  sold: "",
+                  images: "",
+                  color: [],
+                  tags: [],
+                  category: "",
+                  subCategory: "",
+                });
+              }
             }
           }
+        }
+        if (removedImage) {
+          await updateProduct(product._id, {
+            images: product.images,
+          });
         }
       }
     } catch (error) {
@@ -553,7 +570,7 @@ const ProductUpdate = () => {
                 <Button
                   variant="contained"
                   className="mr-3"
-                  onClick={handleAddProduct}
+                  onClick={handleUpdateProduct}
                 >
                   Update
                 </Button>

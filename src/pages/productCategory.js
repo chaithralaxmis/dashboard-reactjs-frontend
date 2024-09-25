@@ -68,14 +68,22 @@ const ProductCategory = () => {
     }
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setEdit(false);
+    setSubCategory(null);
+    setSubCategories([]);
+    setCategories([]);
+    setParentCategory(null);
+    setFinalCategory(null);
+
+    getProductCategories();
+  };
+
   const addCategory = async () => {
     try {
-      await addProductCategory({ title, finalCategory });
-      setTitle("");
-      setParentCategory(null);
-      setFinalCategory(null);
-
-      getProductCategories(); // Refresh the list after adding
+      await addProductCategory({ title, parentCategory: finalCategory });
+      resetForm();
     } catch (error) {
       console.error("Failed to add category:", error);
     }
@@ -84,12 +92,9 @@ const ProductCategory = () => {
     try {
       await updateProductCategory(selectedCategory._id, {
         title,
-        parentCategory,
+        parentCategory: finalCategory,
       });
-      setTitle("");
-      setParentCategory(null);
-      setSelectedCategory(null);
-      getProductCategories();
+      resetForm();
     } catch (error) {
       console.error("Failed to add category:", error);
     }
@@ -110,11 +115,14 @@ const ProductCategory = () => {
     setSelectedCategory(value);
     setTitle(value.title);
     if (value.parentCategory) {
+      console.log(value);
+
       const isParent = parentCategories.some(
         (category) => category._id === value?.parentCategory?._id
       );
       if (isParent) {
         setParentCategory(value.parentCategory?._id);
+        getProductSubCategories(value?.parentCategory?._id);
       } else {
         getProductSubCategories(value?.parentCategory?.parentCategory);
         setParentCategory(value?.parentCategory?.parentCategory);
@@ -211,6 +219,14 @@ const ProductCategory = () => {
               </div>
             </div>
             <div className="my-3 text-right w-100">
+              <Button
+                variant="outlined"
+                size="medium"
+                className="mr-2"
+                onClick={resetForm}
+              >
+                Cancel
+              </Button>
               <Button
                 variant="contained"
                 className="mr-3"
